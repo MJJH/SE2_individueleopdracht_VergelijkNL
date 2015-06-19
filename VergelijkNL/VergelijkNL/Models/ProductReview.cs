@@ -20,7 +20,7 @@ namespace VergelijkNL.Models
         // Constructor
         public ProductReview (int id, string auteur, string inhoud, DateTime verzonden, Boolean aanrader, List<Dictionary<string, float>> beoordeling, Product voor, Boolean bezit) 
             // Constructor voor parent
-            : base(id, auteur, inhoud, verzonden, aanrader, beoordeling)
+            : base(id, auteur, inhoud, verzonden, aanrader)
         {
             // Sla de overige parameters op in het gemaakte object
             Voor = voor;

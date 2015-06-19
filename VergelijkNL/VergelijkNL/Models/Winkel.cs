@@ -21,16 +21,16 @@ namespace VergelijkNL.Models
         public string LogoPath { get; set; }
         public string Website { get; set; }
 
-        public List<Dictionary<string, string>> Info { get; set; }
+        public Dictionary<string, string> Info { get; set; }
 
         // Constructor
-        public Winkel (int id, string naam, string logo, string url, List<Dictionary<string, string>> info){
+        public Winkel (int id, string naam, string logo, string url){
             this.id = id;
 
             Naam = naam;
             LogoPath = logo;
             Website = url;
-            Info = info;
+            Info = new Dictionary<string, string>();
         }
     }
 }

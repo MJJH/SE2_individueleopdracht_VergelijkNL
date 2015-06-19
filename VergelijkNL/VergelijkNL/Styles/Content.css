@@ -1,2 +1,63 @@
-﻿body {
+﻿html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-color: #eee;
+}
+
+header {
+    background: #555;
+    color: white;
+    height: 60px;
+    border-bottom: 5px solid #ddd;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+    header div {
+        width: 100%;
+        padding: 0;
+        text-align: center;
+    }
+
+        header div a {
+            color: white;
+            text-decoration: none;
+        }
+
+            header div a:not(:last-child)::after {
+                content: ' | ';
+            }
+
+            header div a:hover {
+                color: #eee;
+                text-decoration: none;
+            }
+
+            header div a.current {
+                font-weight: bold;
+            }
+
+
+.container {
+    background-color: #fff;
+    box-shadow: 0 0 rgba(0, 0, 0, 0.5);
+    border-bottom: 3px solid #ddd;
+}
+
+#content.empty {
+    text-align: center;
+    font-size: 50px;
+    color: white;
+    text-shadow: 3px 0 3px #000, -3px 0 3px #000, 0 3px 3px #000, 0 -3px #000;
+}
+
+#path {
+    text-align: right;
+}
+
+.container {
+    padding: 20px 15px;
 }

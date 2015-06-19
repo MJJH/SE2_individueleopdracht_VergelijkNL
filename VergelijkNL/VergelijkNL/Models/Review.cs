@@ -33,12 +33,12 @@ namespace VergelijkNL.Models
         // Properties
         public string Inhoud { get; set; }
         public Boolean Aanrader { get; set; }
-        public List<Dictionary<string, float>> Beoordelingen { get; set; }
+        public Dictionary<string, float> Beoordelingen { get; set; }
         public DateTime Tijdstip { get; set; }
         public string Auteur { get; set; }
 
         // Constructor
-        public Review(int id, string auteur, string inhoud, DateTime verzonden, Boolean aanrader, List<Dictionary<string, float>> beoordeling)
+        public Review(int id, string auteur, string inhoud, DateTime verzonden, Boolean aanrader)
         {
             // Sla alle gegevens op uit de constructor parameters in de instance variabelen.
             this.id = id;
@@ -49,7 +49,7 @@ namespace VergelijkNL.Models
             Aanrader = aanrader;
 
             // Dit is een lijst met beoordelingen, de naam van de beoordeling en de daarvoor gegeven punten. 0.0 - 5.0
-            Beoordelingen = beoordeling;
+            Beoordelingen = new Dictionary<string, float>();
         }
     }
 }
