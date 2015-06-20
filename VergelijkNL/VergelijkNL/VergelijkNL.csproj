@@ -83,7 +83,7 @@
     <Compile Include="Models\ProductReview.cs" />
     <Compile Include="Models\Review.cs" />
     <Compile Include="Models\Verkoop.cs" />
-    <Compile Include="Models\_notUsed_User.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\Winkel.cs" />
     <Compile Include="Models\WinkelReview.cs" />
     <Compile Include="product.aspx.cs">

@@ -16,13 +16,13 @@ namespace VergelijkNL.Models
      * een id en mogelijk volldige naam. Maar voor nu blijft het bij het opslaan van een gebruikersnaam.
      *                                                                                                                      */
 
-    public class _notUsed_User
+    public class User
     {
         // Properties
         public String Username { get; set; }
 
         // Constructor
-        public _notUsed_User(String username)
+        public User(String username)
         {
             // Sla username op in het object
             Username = username;

@@ -33,9 +33,9 @@ namespace VergelijkNL.Models
         // Properties
         public string Inhoud { get; set; }
         public Boolean Aanrader { get; set; }
-        public Dictionary<string, float> Beoordelingen { get; set; }
+        public Dictionary<string, double> Beoordelingen { get; set; }
         public DateTime Tijdstip { get; set; }
-        public string Auteur { get; set; }
+        public User Auteur { get; set; }
 
         // Constructor
         public Review(int id, string auteur, string inhoud, DateTime verzonden, Boolean aanrader)
@@ -43,7 +43,7 @@ namespace VergelijkNL.Models
             // Sla alle gegevens op uit de constructor parameters in de instance variabelen.
             this.id = id;
 
-            Auteur = auteur;
+            Auteur = new User(auteur);
             Inhoud = inhoud;
             Tijdstip = verzonden;
             Aanrader = aanrader;
