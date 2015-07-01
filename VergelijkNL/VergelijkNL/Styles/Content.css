@@ -61,3 +61,36 @@ header {
 .container {
     padding: 20px 15px;
 }
+
+#reviews .author {
+    font-weight: bold;
+    width: 100%;
+}
+
+#reviews .content {
+    padding: 5px;
+    background-color: #F9F9F9;
+}
+
+#reviews span {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#reviews .table {
+    margin-top: 10px;
+}
+
+#newReview {
+    background: #F9F9F9;
+    padding: 5px 10px;
+}
+
+.full {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+}

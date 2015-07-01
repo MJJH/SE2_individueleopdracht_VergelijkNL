@@ -23,6 +23,7 @@ namespace VergelijkNL.Models
 
         public Dictionary<string, string> Info { get; set; }
 
+        public List<WinkelReview> Reviews { get; set; }
         // Constructor
         public Winkel (int id, string naam, string logo, string url){
             this.id = id;

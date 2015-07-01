@@ -23,6 +23,8 @@ namespace VergelijkNL.Database
             foreach (Dictionary<string, object> spec in specs)
                 create.Info.Add(spec["naam"].ToString(), spec["waarde"].ToString());
 
+            create.Reviews = new ReviewDatabase().getReviews(create);
+
             return create;
         }
     }

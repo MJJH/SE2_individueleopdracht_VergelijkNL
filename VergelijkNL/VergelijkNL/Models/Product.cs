@@ -34,6 +34,8 @@ namespace VergelijkNL.Models
         // Lijst van alle verkopende winkels en bijbehorende informatie
         public Dictionary<Winkel, Verkoop> Verkopers { get; set; }
 
+        public List<ProductReview> Reviews { get; set; }
+
         // Constructor
         public Product(int id, string parent, string naam, string link)
         {

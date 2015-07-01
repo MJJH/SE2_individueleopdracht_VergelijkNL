@@ -18,9 +18,9 @@ namespace VergelijkNL.Models
         public Boolean Bezit { get; set; }
 
         // Constructor
-        public ProductReview (int id, string auteur, string inhoud, DateTime verzonden, Boolean aanrader, Product voor, Boolean bezit) 
+        public ProductReview(int id, string auteur, string inhoud, DateTime verzonden, Boolean aanrader, double beoordeling, Dictionary<string, double> beoordelingen, Product voor, Boolean bezit) 
             // Constructor voor parent
-            : base(id, auteur, inhoud, verzonden, aanrader)
+            : base(id, auteur, inhoud, verzonden, aanrader, beoordeling, beoordelingen)
         {
             // Sla de overige parameters op in het gemaakte object
             Voor = voor;

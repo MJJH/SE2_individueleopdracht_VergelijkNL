@@ -37,6 +37,8 @@ namespace VergelijkNL.Database
             Dictionary<string, object> row = get[0];
             Product create = new Product(Convert.ToInt32(row["id"]), row["categorie"].ToString(), row["naam"].ToString(), row["link"].ToString());
 
+            create.Reviews = new ReviewDatabase().getReviews(create);
+
             // Krijg specificaties en voeg deze toe
             List<Dictionary<string, object>> specs = getQuery("SELECT 'merk' as naam, merk as waarde FROM product WHERE id = " + create.Id + " UNION ALL SELECT naam, waarde || ' ' || eenheid AS waarde FROM SPECIFICATIE s JOIN PRODUCTSSPECIFICATIE ps ON ps.Specificatie = s.naam WHERE product = " + create.Id);
             foreach (Dictionary<string, object> spec in specs)

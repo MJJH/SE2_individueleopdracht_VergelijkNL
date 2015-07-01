@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\ProductDatabase.cs" />
+    <Compile Include="Database\ReviewDatabase.cs" />
     <Compile Include="Database\WinkelDatabase.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductReview.cs" />

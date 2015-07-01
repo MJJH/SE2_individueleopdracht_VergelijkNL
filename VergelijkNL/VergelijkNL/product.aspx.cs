@@ -19,6 +19,8 @@ namespace VergelijkNL
 
         private ProductDatabase db;
 
+        string[] beoordelingen = { "Kwaliteit", "Prijs", "Houdbaarheid" };
+
         protected void Page_Load(object sender, EventArgs e)
         {
             db = new ProductDatabase();
@@ -30,13 +32,60 @@ namespace VergelijkNL
 
                 // Vul het volledige path aan
                 createPath();
-                
+
                 // Als het om een product gaat, geeft dan alle plaatjes en gegevens van deze producten
                 if (currentProduct != null)
                     fillInfo();
+                else
+                    newReview.Controls.Clear();
+
+                submit.ServerClick += submit_ServerClick;
+            } 
+            else
+            {
+                newReview.Controls.Clear();
             }
 
             createNav();
+        }
+
+        void submit_ServerClick(object sender, EventArgs e)
+        {
+            if (Request["name"] == null || Request["name"] == "" || Request["name"].Length < 3){
+                Form.Controls.AddAt(0, new Label() { Text = "Vul een naam in van minimaal 3 tekens!", CssClass = "bg-danger full" });
+                return;
+            }
+
+            Session["name"] = Request["name"];
+
+            if (Request["message"] == null || Request["message"] == "" || Request["message"].Length < 10){
+                Form.Controls.AddAt(0, new Label() { Text = "Vul een bericht in van minimaal 10 tekens!", CssClass = "bg-danger full" });
+                return;
+            }
+
+            double d;
+            if (Request["rating"] == null || Request["rating"] == "" || !(double.TryParse(Request["rating"], out d)) || d < 0 || d > 5){
+                Form.Controls.AddAt(0, new Label() { Text = "Vul een geldige waarde in voor de beoordeling", CssClass = "bg-danger full" });
+                return;
+            }
+
+            Dictionary<string, double> beoordeling = new Dictionary<string, double>();
+            foreach (string key in beoordelingen)
+            {
+                double w;
+                if (Request[key] != null && Request[key] != "" && double.TryParse(Request[key], out w) && w >= 0 && w <= 5)
+                    beoordeling.Add(key, w);
+            }
+
+            ProductReview create = new ProductReview(-1, Request["name"], Request["message"], DateTime.Now, false, d, beoordeling, currentProduct, false);
+            if (!new ReviewDatabase().writeReview(create))
+            {
+                Form.Controls.AddAt(0, new Label() { Text = "Er is iets fout gegaan. Review niet verstuurd.", CssClass = "bg-danger full" });
+                return;
+            }
+            else
+                Form.Controls.AddAt(0, new Label() { Text = "Review verzonden!", CssClass = "bg-success full" });
+                
         }
 
         // Kijk of bestand een product of category is, en als het een product is pak dan zijn category
@@ -96,9 +145,9 @@ namespace VergelijkNL
             #region basic
             // Naam
             Panel pName = new Panel() { ID = "Naam" };
-            Label name = new Label() { Text = currentProduct.Specificaties["merk"] + " " + currentProduct.Naam };
+            Label n = new Label() { Text = currentProduct.Specificaties["merk"] + " " + currentProduct.Naam };
             content.Controls.Add(pName);
-            pName.Controls.Add(name);
+            pName.Controls.Add(n);
 
 #endregion
 
@@ -184,6 +233,82 @@ namespace VergelijkNL
 
             specs.Controls.Add(tSpecs);
             content.Controls.Add(specs);
+            #endregion
+
+            content.Controls.Add(new Literal() { Text = "<hr/>" });
+
+            #region recensies
+            Panel reviews = new Panel() { ID = "reviews", CssClass = "table-responsive" };
+
+            foreach (ProductReview r in currentProduct.Reviews)
+            {
+                Panel review = new Panel() { CssClass = "review" };
+                review.Controls.Add(new Label() { Text = r.Auteur.Username + ":", CssClass = "author" });
+                review.Controls.Add(new Label() { Text = r.Inhoud, CssClass = "content" });
+
+                review.Controls.Add(new Label() { Text = "Beoordeelt deze winkel: " + r.Beoordeling , CssClass = "points" });
+
+                string text = "Aangeraden: ";
+                if(r.Aanrader)
+                    text += "✓";
+                else
+                    text += "×";
+
+                review.Controls.Add(new Label() { Text = text, CssClass = "advise" });
+
+                string bezit = "In bezit: ";
+                if (r.Bezit)
+                    bezit += "✓";
+                else
+                    bezit += "×";
+
+                review.Controls.Add(new Label() { Text = bezit, CssClass = "own" });
+
+                if (r.Beoordelingen.Count > 0)
+                {
+                    // Maak nieuwe tabel
+                    Table tReviews = new Table() { CssClass = "table table-striped" };
+
+                    // Maak de header met titels
+                    TableHeaderRow revHeader = new TableHeaderRow();
+                    revHeader.Controls.Add(new TableHeaderCell() { Text = "Eigenschap" });
+                    revHeader.Controls.Add(new TableHeaderCell() { Text = "Beoordeling" });
+                    tReviews.Controls.Add(revHeader);
+
+                    foreach (string key in r.Beoordelingen.Keys)
+                    {
+                        TableRow rij = new TableRow();
+                        rij.Controls.Add(new TableCell() { Text = key });
+                        rij.Controls.Add(new TableCell() { Text = r.Beoordelingen[key].ToString("##.#") });
+
+                        tReviews.Controls.Add(rij);
+                    }
+
+                    review.Controls.Add(tReviews);
+                }
+
+                reviews.Controls.AddAt(0, review);
+
+                reviews.Controls.AddAt(1, new Literal() { Text = "<hr/>" });
+            }
+
+            content.Controls.Add(reviews);
+            #endregion
+
+            if (HttpContext.Current.Session["name"] != null)
+                name.Value = HttpContext.Current.Session["name"].ToString();
+
+            #region nieuw
+            rate.Controls.Clear();
+
+            foreach(string k in beoordelingen)
+            {
+                Panel add = new Panel() { CssClass = "form-group" };
+                add.Controls.Add(new Label() { Text = k });
+                add.Controls.Add(new LiteralControl("<input type=\"number\" class=\"form-control\" min=\"0\" max=\"5\" value=\"3\" step=\"0.5\" id=\"rating\" name=\""+k+"\" id=\""+k+"\" required />"));
+
+                rate.Controls.Add(add);
+            }
             #endregion
         }
 
